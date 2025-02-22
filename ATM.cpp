@@ -16,16 +16,16 @@ void showMenu()
     cout << "5. Exit" << endl;
 }
 
-double transferMoney(double accountBalance)
+double transferMoney(double myAccountBalance)
 {
     double transferAmount;
     cout << "How much do you want to transfer? : ";
     cin >> transferAmount;
 
-    if (transferAmount <= accountBalance) accountBalance -= transferAmount;
+    if (transferAmount <= myAccountBalance) myAccountBalance -= transferAmount;
     else cout << "Not enough money to transfer";
 
-    return accountBalance;
+    return myAccountBalance;
 }
 
 int main()
