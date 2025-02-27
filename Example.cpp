@@ -6,19 +6,6 @@
 #include <assert.h>
 using namespace std;
 
-// struct product
-// {
-//     float basePrice;
-//     float taxes;
-//     float maxPrice;
-// };
-
-// int netPrice(product p)
-// {
-//     int result = p.basePrice + p.basePrice * (p.taxes/100);
-//     return result;
-// }
-
 const int NUMBER_OF_PRODUCTS = 4;
 
 string serialNum[NUMBER_OF_PRODUCTS];
@@ -31,26 +18,8 @@ void getIndexOfHighestSales();
 
 int main()
 {
-	// product p[3];
+	int quant;
 
-    // for(int i = 0 ; i < 3 ; i++)
-    // {
-    //     cout << "Data of product #" << (i+1) << endl;
-    //     cout << "Enter base price of product : ";
-    //     cin >> p[i].basePrice;
-    //     cout << "Enter taxes of product : ";
-    //     cin >> p[i].taxes;
-    //     cout << "Enter maximum price of the belonging production line : ";
-    //     cin >> p[i].maxPrice;
-    
-    //     cout << "Product net price : " << netPrice(p[i]) << endl;
-
-    //     if (netPrice(p[i]) > p[i].maxPrice)
-    //         cout << "Product net price exceeds production line maximum price" << endl;
-    //     else 
-    //         cout << "Product net price is accepted" << endl;
-    // }
-    int quant;
     InputProducts ();
     cout << "Serial Numbers of the Products that has less quantity than a value entered by the user:\n";
     cout << "Please enter the quantity: "; cin >> quant;
