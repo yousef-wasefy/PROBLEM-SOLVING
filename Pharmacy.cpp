@@ -4,10 +4,6 @@ using namespace std;
 
 //search for a medicine
 
-void PrintBill(Bill bill);
-Bill GenerateBill(Bill bill);
-void checkOut();
-
 struct Medicine {
     string name;  // اسم الدواء
     string category;
@@ -226,6 +222,10 @@ struct Bill
     double ShippingFees;
 };
 
+void PrintBill(Bill bill);
+Bill GenerateBill(Bill bill);
+void checkOut();
+
 Bill GenerateBill(Bill bill)
 {
     bill.totalAmount = 0;
@@ -313,6 +313,6 @@ int main()
  } while (choice == 1 || choice == 2);
     searchForMedicine();
     askUserToViewCart();
-
+    checkOut();
     return 0;
 }
