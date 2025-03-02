@@ -204,19 +204,6 @@ void searchForMedicine()
     }
 }
 
-void viewCart();
-
-// void askUserToViewCart()
-// {
-//     char view;
-//     cout << "Do you want to view your cart?(y/n)";
-//     cin >> view;
-//     if (view == 'y' || view == 'Y')
-//         viewCart();
-//     else
-//         searchForMedicine();
-// }
-
 //يوسف هجرس
 void viewCart() {
     if (cartSize == 0) {
@@ -232,7 +219,6 @@ void viewCart() {
     }
     cout << "Total: $" << total << "\n";
 }
-
 
 int usercount = 0;
 void signـup() {
@@ -423,7 +409,6 @@ int main()
             break;
         }
     } while(answer != 5);
-    // askUserToViewCart();
     
     return 0;
 }
