@@ -12,6 +12,7 @@ struct Medicine {
     int stock;    // الكمية المتاحة
     int quantity; //الكمية اللي اليوزر هياخدها 
 };
+
 Medicine medicines[100] = {
     {"Paracetamol", "Painkiller", 23.0,40},
     {"Ibuprofen", "Painkiller", 17.5,30},
@@ -36,6 +37,8 @@ struct user {
 #define max 100
 user users[max];
 
+
+
 string formatqunatity(int quantity)
 {
     if (quantity == 0)
@@ -54,7 +57,7 @@ void displayMedicine() { // دالة لعرض الادوية علي الشاشة
         cout << "********\n";
     }
 }
-    
+
 //ندي
 int medicineCount = 0;    // عدد الادويه المسجله
 
@@ -88,7 +91,7 @@ static void UpdateStock()    //  داله لتحديث مخزون الدواء
     cout << "Enter the name of the medicine you wanna update : " << endl;
     cin >> SearchName;
     bool found = false;
-    for (int i = 0;i < medicineCount;i++) {
+    for (int i = 0; i < medicineCount; i++) {
         if (medicines[i].name == SearchName) {
             found = true;
             cout << "stock for " << medicines[i].stock << " : " << medicines[i].stock << endl;
@@ -109,14 +112,12 @@ static void UpdateStock()    //  داله لتحديث مخزون الدواء
     }
 }
 
-int cartSize = 0;
 //يوسف هجرس
 void addToCart(Medicine medicines, int quant) {
-    if (cartSize < 100)
+    if (typecounter < 100)
     {
-        cart[cartSize] = medicines;
-        cart[cartSize].quantity = quant;
-        cartSize++;
+        cart[typecounter] = medicines;
+        cart[typecounter].quantity = quant;
         cout << "Added " << medicines.name << " to cart.\n";
     }
     else {
@@ -153,12 +154,15 @@ void searchForMedicine()
                 cin >> add;
                 if (add == 'y' || add == 'Y')
                 {
-                    typecounter++;
+                    if (typecounter == 0)
+                        typecounter++;
+                    IncrementTypeCounter(search);
                     cout << "How many you want?: ";
                     cin >> medicines[i].quantity;
                     //check first how many in stock!!
                     addToCart(medicines[i], medicines[i].quantity);
                 }
+
             }
         }break;
 
@@ -166,7 +170,7 @@ void searchForMedicine()
     case 'C':
         cout << "which category you are looking for?" << endl;
         cin >> category;
-        for (int i = 0; i < SIZE_OF_MEDICINES;i++)
+        for (int i = 0; i < SIZE_OF_MEDICINES; i++)
             if (medicines[i].category == category)
             {
                 cout << "Medicine : " << medicines[i].name << "\nPrice : " << medicines[i].price << endl;
@@ -186,7 +190,9 @@ void searchForMedicine()
                 cin >> add;
                 if (add == 'y' || add == 'Y')
                 {
-                    typecounter++;
+                    if (typecounter == 0)
+                        typecounter++;
+                    IncrementTypeCounter(search);
                     cout << "How many you want?: ";
                     cin >> medicines[i].quantity;
                     addToCart(medicines[i], medicines[i].quantity);
@@ -207,24 +213,14 @@ void viewCart() {
     }
 
     cout << "Your Cart: \n";
-    cout << "Name\tPrice\tQuantity\n";
+    cout << "Name\tPrice\tQuantity";
     double total = 0;
-
     for (int i = 0; i < typecounter; i++) {
-        if (cart[i].quantity > 0) {
-            // Merge quantities of the same medicine
-            for (int j = i + 1; j < typecounter; j++) {
-                if (cart[j].name == cart[i].name) {
-                    cart[i].quantity += cart[j].quantity;
-                    cart[j].quantity = 0; // Mark as processed
-                }
-            }
-            cout << "- " << cart[i].name << "\t\t" << cart[i].price << "egp\t(" << cart[i].quantity << ")\n";
-            total += cart[i].price * cart[i].quantity;
-        }
+        cout << "- " << cart[i].name << " \t" << cart[i].price << "egp\t"<< medicines[i].quantity<<"\n";
+        total += cart[i].price * cart[i].quantity;
     }
 
-    cout << "Total: " << total << "egp\n";
+    cout << "Total: " << total << "egp\t";
 }
 
 int usercount = 0;
@@ -285,6 +281,7 @@ void PrintBill(Bill bill);
 Bill GenerateBill(Bill bill)
 {
     bill.totalAmount = 0;
+    
     for (int i = 0; i < bill.ItemCount; i++)
     {
         bill.BillItems[i].TotalLine = bill.BillItems[i].ItemPrice * bill.BillItems[i].Count;
@@ -329,20 +326,12 @@ Bill GenerateBill(Bill bill)
 void PrintBill(Bill bill)
 {
     cout << "Medicine Name\tQuantity\tPrice\tTotal Price\n";
-    for (int i = 0; i < typecounter; i++) {
-        if (cart[i].quantity > 0) {
-            // Merge quantities of the same medicine
-            for (int j = i + 1; j < typecounter; j++) {
-                if (cart[j].name == cart[i].name) {
-                    cart[i].quantity += cart[j].quantity;
-                    cart[j].quantity = 0; // Mark as processed
-                }
-            }
-            cout << bill.BillItems[i].ItemName << "\t\t ";
-            cout << bill.BillItems[i].Count << "\t\t";
-            cout << bill.BillItems[i].ItemPrice << "\t";
-            cout << bill.BillItems[i].TotalLine << "\n";
-        }
+    for (int i = 0; i < bill.ItemCount; i++)
+    {
+        cout << bill.BillItems[i].ItemName << "\t\t ";
+        cout << bill.BillItems[i].Count << "\t\t";
+        cout << bill.BillItems[i].ItemPrice << "\t";
+        cout << bill.BillItems[i].TotalLine << "\n";
     }
     cout << "Total Price Before Discount& VAT: " << bill.totalAmount << "\n";
     cout << "Discount: " << bill.discount << "%\n";
@@ -383,33 +372,34 @@ int main()
         cout << "4. view cart" << endl;
         cout << "5.checkout& payment" << endl;
         cout << "6. leave out" << endl;
+
         cin >> answer;
         switch (answer)
         {
         case 1:
             signـup();
             if (users->role == "admin")
-        do {           //for admins only!!!
-        cout << endl << "Pharmacy System" << endl;
-        cout << "1) add new medicine" << endl;
-        cout << "2) Update Stock" << endl;
-        cout << "3) exit" << endl;
-        cout << "enter your choice" << endl;
-        cin >> Choice;
-        switch (Choice) {
-        case 1:
-            AddMedicine();
-            break;
-        case 2:
-            UpdateStock();
-            break;
-        case 3:
-            cout << "exiting successfully" << endl;
-            break;
-        default:
-            cout << "incorrect choice,try again" << endl;
-        }
-        } while (Choice != 3);
+                do {           //for admins only!!!
+                    cout << endl << "Pharmacy System" << endl;
+                    cout << "1) add new medicine" << endl;
+                    cout << "2) Update Stock" << endl;
+                    cout << "3) exit" << endl;
+                    cout << "enter your choice" << endl;
+                    cin >> Choice;
+                    switch (Choice) {
+                    case 1:
+                        AddMedicine();
+                        break;
+                    case 2:
+                        UpdateStock();
+                        break;
+                    case 3:
+                        cout << "exiting successfully" << endl;
+                        break;
+                    default:
+                        cout << "incorrect choice,try again" << endl;
+                    }
+                } while (Choice != 3);
             break;
         case 2:
             cout << "enter your name:";
@@ -435,6 +425,7 @@ int main()
             break;
         }
     } while (answer != 6);
-    
+
+
     return 0;
 }
