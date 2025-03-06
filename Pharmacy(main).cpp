@@ -13,12 +13,12 @@ struct Medicine {
     int quantity; //الكمية اللي اليوزر هياخدها 
 };
 Medicine medicines[100] = {
-    {"Paracetamol", "Painkiller", 23.0,40},
-    {"Ibuprofen", "Painkiller", 17.5,30},
-    {"Aspirin", "Painkiller", 31.0,20},
-    {"Amoxicillin", "Antibiotic", 46.0,15},
-    {"Azithromycin", "Antibiotic", 42.0,4},
-    {"Cough Syrup", "Cold & Flu", 19.0,50},
+    {"paracetamol", "Painkiller", 23.0,40},
+    {"ibuprofen", "Painkiller", 17.5,30},
+    {"aspirin", "Painkiller", 31.0,20},
+    {"amoxicillin", "Antibiotic", 46.0,15},
+    {"azithromycin", "Antibiotic", 42.0,4},
+    {"cough Syrup", "Cold & Flu", 19.0,50},
 };
 const int SIZE_OF_MEDICINES = sizeof(medicines) / sizeof(medicines[0]);
 Medicine cart[SIZE_OF_MEDICINES];
@@ -142,7 +142,10 @@ void searchForMedicine()
     case 'N':
         cout << "search for medicine: ";
         cin >> search;
-
+        for (char &c : search)
+        {
+            c = tolower(c);
+        }
         for (int i = 0; i < SIZE_OF_MEDICINES; i++) {
             if (medicines[i].name == search)
             {
@@ -285,6 +288,9 @@ void PrintBill(Bill bill);
 Bill GenerateBill(Bill bill)
 {
     bill.totalAmount = 0;
+    bill.discount = 0;
+    bill.ShippingFees = 30;
+    bill.VAT = 17.5;
     for (int i = 0; i < bill.ItemCount; i++)
     {
         bill.BillItems[i].TotalLine = bill.BillItems[i].ItemPrice * bill.BillItems[i].Count;
