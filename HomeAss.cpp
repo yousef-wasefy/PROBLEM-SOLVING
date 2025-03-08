@@ -6,58 +6,68 @@
 #include <assert.h>
 using namespace std;
 
-// struct product
-// {
-//     float basePrice;
-//     float taxes;
-//     float maxPrice;
-// };
-
-// int netPrice(product p)
-// {
-//     int result = p.basePrice + p.basePrice * (p.taxes/100);
-//     return result;
-// }
+//test
 
 const int NUMBER_OF_PRODUCTS = 4;
 
-string serialNum[NUMBER_OF_PRODUCTS];
-int quantity[NUMBER_OF_PRODUCTS];
-float totalSales[NUMBER_OF_PRODUCTS];
+struct product
+{
+    string serialNum;
+    int quantity;
+    float totalSales;
+    float price;
+}products[NUMBER_OF_PRODUCTS];
 
-void InputProducts ();
+void InputProducts();
 void productsLessThan(int quant);
 void getIndexOfHighestSales();
+void displayProduct();
+void discountFor6ItemsLeft();
+int menu();
 
 int main()
 {
-	// product p[3];
-
-    // for(int i = 0 ; i < 3 ; i++)
-    // {
-    //     cout << "Data of product #" << (i+1) << endl;
-    //     cout << "Enter base price of product : ";
-    //     cin >> p[i].basePrice;
-    //     cout << "Enter taxes of product : ";
-    //     cin >> p[i].taxes;
-    //     cout << "Enter maximum price of the belonging production line : ";
-    //     cin >> p[i].maxPrice;
-    
-    //     cout << "Product net price : " << netPrice(p[i]) << endl;
-
-    //     if (netPrice(p[i]) > p[i].maxPrice)
-    //         cout << "Product net price exceeds production line maximum price" << endl;
-    //     else 
-    //         cout << "Product net price is accepted" << endl;
-    // }
     int quant;
-    InputProducts ();
-    cout << "Serial Numbers of the Products that has less quantity than a value entered by the user:\n";
-    cout << "Please enter the quantity: "; cin >> quant;
-    productsLessThan(quant);
-    getIndexOfHighestSales();
+    int choice;
+    char answer;
+    InputProducts();
+    do
+    {
+        switch(choice = menu())
+        {
+        case 1:
+            cout << "Serial Numbers of the Products that has less quantity than a value entered by the user:\n";
+            cout << "Please enter the quantity: "; cin >> quant; 
+            productsLessThan(quant);break;
+        case 2:
+            getIndexOfHighestSales();break;
+        case 3:
+            discountFor6ItemsLeft();break;    
+        case 4: 
+            displayProduct();break;
+        default:
+            cout << "Invalid Choice! please try again.";
+            answer = 'y';
+            continue;
+        }
+        
+        cout << "\nDo you want to Apply Another function, Press 'Y' or 'y' for yes, any other key to stop: ";
+        cin >> answer;
+    } while(answer == 'y' || answer == 'Y');
 
     return 0;
+}
+
+int menu()
+{
+    int choice;
+    cout << "Please enter a number:" << endl;
+    cout << "Press 1 to get products that have less quantity than a certain value." << endl;
+    cout << "Press 2 to Get Product with the highest sales." << endl;
+    cout << "Press 3 to Apply 50% discount for products that have quantity less than 6." << endl;
+    cout << "Press 4 to Display all the products." << endl;
+    cin >> choice;
+    return choice;
 }
 
 void InputProducts ()
@@ -66,36 +76,77 @@ void InputProducts ()
     for (int i = 0 ; i < NUMBER_OF_PRODUCTS ; i++)
     {
         cout << "Enter values of product #" << (i+1) << endl;
-        cout << "Serial number: "; cin >> serialNum[i];
-        cout << "qunatity: "; cin >> quantity[i];
-        cout << "sales: "; cin >> totalSales[i];
+        cout << "Serial number: "; cin >> products[i].serialNum;
+        cout << "qunatity: "; cin >> products[i].quantity;
+        cout << "sales: "; cin >> products[i].totalSales;
+        cout << "Price: "; cin >> products[i].price;
     }
     
 }
 
-void productsLessThan(int quant)
+void displayProduct()
 {
-    
     for (int i = 0 ; i < NUMBER_OF_PRODUCTS ; i++)
     {
-        if (quantity[i] < quant) 
-            cout << "Product " << serialNum[i] << endl;
+        cout << "Enter values of product #" << (i+1) << endl;
+        cout << "Serial number: "; cout << products[i].serialNum << endl;
+        cout << "qunatity: "; cout << products[i].quantity << endl;
+        cout << "sales: "; cout << products[i].totalSales << endl;
+        cout << "Price: "; cout << products[i].price << endl;
     }
+}
 
+void productsLessThan(int quant)
+{ 
+    for (int i = 0 ; i < NUMBER_OF_PRODUCTS ; i++)
+    {
+        if (products[i].quantity < quant) 
+            cout << "Product " << products[i].serialNum << endl;
+    }
+}
+
+void discountFor6ItemsLeft()
+{
+    cout << "Discount applied for product(s) ";
+    for (int i = 0 ; i < NUMBER_OF_PRODUCTS ; i++)
+    {
+        if (products[i].quantity < 6) 
+        { 
+            products[i].price *= 0.5;
+            cout << (i+1) << " ";
+        }
+    }
 }
 
 void getIndexOfHighestSales()
 {
-    float highest = totalSales[0];
-    int index;
+    bool isHigher = false;
+    float highest = -1;
+    int index[NUMBER_OF_PRODUCTS]; //for getting index of highest product(s)
+
     for (int i = 0 ; i < NUMBER_OF_PRODUCTS ; i++)
     {
-        if (totalSales[i] > highest) 
+        if (products[i].totalSales > highest) 
         {
-            highest = totalSales[i];
-            index = i;
+            highest = products[i].totalSales;
+            index[i] = i;
         }
+        else if (products[i].totalSales == highest) index[i] = i;
     }
 
-    cout << "Product with highest sales\nProduct " << (index + 1);
+    cout << "Product with highest sales\nProduct(s) ";
+    for (int j = 0 ; j < NUMBER_OF_PRODUCTS ; j++) 
+    { 
+        isHigher =  false;
+        for (int i = 0 ; i < NUMBER_OF_PRODUCTS ; i++)
+        {
+            if (products[j].totalSales >= products[i].totalSales) isHigher = true;
+            else { 
+                isHigher =  false;
+                break;
+            }
+        }
+
+        if (isHigher) cout << (index[j] + 1) << " ";
+    }
 }
