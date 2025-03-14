@@ -354,7 +354,7 @@ void PrintBill(Bill bill)
     }
     cout << "Total Price Before Discount& VAT: " << bill.totalAmount << "\n";
     cout << "Discount: " << bill.discount << "%\n";
-    cout << "Total After Disscount: " << bill.finalAmountWithoutVat << "\n";
+    cout << "Total After Discount: " << bill.finalAmountWithoutVat << "\n";
     cout << "VAT: " << bill.VAT << "%\n";
     cout << "Total After VAT: " << bill.finalAmountWithVat << "\n";
     cout << "Shipping Fees: " << bill.ShippingFees << "\n";

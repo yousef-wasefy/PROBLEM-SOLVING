@@ -32,7 +32,7 @@ int main()
 {
     int arr[ROWS][COLS] = {{20,21,7,-9},{2,1,39,0},{33,8,39,4}};
 
-    cout << get2ndMax(arr)<<endl; //33
+    cout << get2ndMax(arr) << endl; //33
 
     return 0;
 }
